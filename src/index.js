@@ -3,12 +3,11 @@ const util = require('util');
 export default function () {
     return {
         noColors: true,
+        xrayReport: {},
+        currentTest: {},
 
         async reportTaskStart(startTime, userAgents, testCount) {
-            this.startTime = startTime;
-            this.testCount = testCount;
-            // NOTE: Replace the next line with your code
-            this.write(util.inspect({ startTime, userAgents, testCount })).newline();
+            this.xrayReport.info = { startTime, userAgents, testCount};
         },
 
         async reportFixtureStart(name, path, meta) {
@@ -17,9 +16,8 @@ export default function () {
         },
 
         async reportTestStart(name, meta) {
-            // NOTE: This method is optional.
-            // NOTE: Replace the next line with your code
-            this.write(util.inspect({ name, meta })).newline();
+            this.currentTest.name = name;
+            this.currentTest.testKey = meta?.id ?? '';
         },
 
         async reportTestDone(name, testRunInfo, meta) {
